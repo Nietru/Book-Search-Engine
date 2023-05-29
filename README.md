@@ -6,7 +6,7 @@ MERN stack application
 
 [npm install]
 [npm run build]
-[npm run start]
+[npm run develop]
 
 ## User Story
 
