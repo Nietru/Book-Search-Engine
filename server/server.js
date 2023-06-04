@@ -3,12 +3,11 @@ const path = require("path");
 const db = require("./config/connection");
 const { ApolloServer } = require("apollo-server-express");
 const { authMiddleware } = require("./utils/auth");
-const mongoose = require("mongoose");
 
 const { typeDefs, resolvers } = require("./schemas");
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5000;
 
 // Comment out this code once you have built out queries and mutations in the client folder
 // const routes = require("./routes");
@@ -36,6 +35,7 @@ const startApolloServer = async () => {
   await server.start();
   server.applyMiddleware({ app });
 
+  // db accesses our models via mongoose ./config/connection.js
   db.once("open", () => {
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
