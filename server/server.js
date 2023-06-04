@@ -1,9 +1,10 @@
 const express = require("express");
 const path = require("path");
-const db = require("./config/connection");
+const db = require("./config/connection").mongoose;
 const { ApolloServer } = require("apollo-server-express");
 const { authMiddleware } = require("./utils/auth");
 const mongoose = require("mongoose");
+var cors = require("cors");
 
 const { typeDefs, resolvers } = require("./schemas");
 
@@ -16,11 +17,12 @@ const server = new ApolloServer({
   context: authMiddleware,
 });
 mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/Book-Search"
+  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/googlebooks-app"
 );
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cors());
 
 // if we're in production, serve client/build as static assets
 if (process.env.NODE_ENV === "production") {
