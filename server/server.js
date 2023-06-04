@@ -4,9 +4,20 @@ const db = require("./config/connection");
 const { ApolloServer } = require("apollo-server-express");
 const { authMiddleware } = require("./utils/auth");
 const mongoose = require("mongoose");
-var cors = require("cors");
 
 const { typeDefs, resolvers } = require("./schemas");
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: authMiddleware,
+});
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/googlebooks"
+);
 
 const { MongoClient } = require("mongodb");
 const uri =
@@ -32,21 +43,8 @@ async function run() {
 }
 run().catch(console.dir);
 
-const app = express();
-const PORT = process.env.PORT || 3001;
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: authMiddleware,
-});
-mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/googlebooks"
-);
-
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors());
 
 // if we're in production, serve client/build as static assets
 if (process.env.NODE_ENV === "production") {
