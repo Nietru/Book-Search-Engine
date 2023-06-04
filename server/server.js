@@ -1,26 +1,25 @@
 const express = require("express");
-
-const { ApolloServer } = require("apollo-server-express");
 const path = require("path");
+const db = require("./config/connection");
+const { ApolloServer } = require("apollo-server-express");
+const { authMiddleware } = require("./utils/auth");
+const mongoose = require("mongoose");
 
-// Uncomment the following code once you have built the queries and mutations in the client folder
 const { typeDefs, resolvers } = require("./schemas");
 
-const db = require("./config/connection");
+const app = express();
+const PORT = process.env.PORT || 3001;
 
 // Comment out this code once you have built out queries and mutations in the client folder
 // const routes = require("./routes");
 
-const PORT = process.env.PORT || 3001;
-const app = express();
-
-// Uncomment the following code once you have built the queries and mutations in the client folder
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: authMiddleware,
 });
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // if we're in production, serve client/build as static assets
@@ -32,6 +31,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
+// New instance of apollo server
 const startApolloServer = async () => {
   await server.start();
   server.applyMiddleware({ app });
