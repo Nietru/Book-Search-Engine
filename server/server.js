@@ -1,12 +1,36 @@
 const express = require("express");
 const path = require("path");
-const db = require("./config/connection").mongoose;
+const db = require("./config/connection");
 const { ApolloServer } = require("apollo-server-express");
 const { authMiddleware } = require("./utils/auth");
 const mongoose = require("mongoose");
 var cors = require("cors");
 
 const { typeDefs, resolvers } = require("./schemas");
+
+const { MongoClient } = require("mongodb");
+const uri =
+  "mongodb+srv://nietru143:@cluster0.hljf9b5.mongodb.net/googlebooks?retryWrites=true&w=majority";
+// Create a new MongoClient
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!"
+    );
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
