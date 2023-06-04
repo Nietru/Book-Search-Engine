@@ -16,6 +16,9 @@
     "concurrently": "^5.1.0"
   },
   "dependencies": {
-    "mongoose": "^7.2.2"
+    "install": "^0.13.0",
+    "mongodb": "4.1",
+    "mongoose": "^7.2.2",
+    "npm": "^9.6.7"
   }
 }
