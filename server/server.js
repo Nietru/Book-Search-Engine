@@ -21,7 +21,7 @@ mongoose.connect(
 
 const { MongoClient } = require("mongodb");
 const uri =
-  "mongodb+srv://nietru143:@cluster0.hljf9b5.mongodb.net/googlebooks?retryWrites=true&w=majority";
+  "mongodb+srv://nietru143:Poopdick09@cluster0.hljf9b5.mongodb.net/googlebooks?retryWrites=true&w=majority";
 // Create a new MongoClient
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
