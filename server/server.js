@@ -20,7 +20,7 @@ mongoose.connect(
   process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/googlebooks-app"
 );
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
@@ -34,6 +34,7 @@ const startApolloServer = async () => {
   await server.start();
   server.applyMiddleware({ app });
 };
+
 db.once("open", () => {
   app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}!`);
